@@ -1663,6 +1663,7 @@ t_cose_crypto_import_ec2_pubkey(int32_t               cose_ec_curve_id,
     psa_status_t          status;
     psa_key_attributes_t  attributes;
     psa_key_type_t        type_public;
+    psa_algorithm_t       alg;
     struct q_useful_buf_c  import;
     // TODO: really make sure this size is right for the curve types supported
     UsefulOutBuf_MakeOnStack (import_form, T_COSE_EXPORT_PUBLIC_KEY_MAX_SIZE + 5);
@@ -1670,12 +1671,15 @@ t_cose_crypto_import_ec2_pubkey(int32_t               cose_ec_curve_id,
     switch (cose_ec_curve_id) {
     case T_COSE_ELLIPTIC_CURVE_P_256:
          type_public  = PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_R1);
+         alg = PSA_ALG_ECDSA(PSA_ALG_SHA_256);
          break;
     case T_COSE_ELLIPTIC_CURVE_P_384:
          type_public  = PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_R1);
+         alg = PSA_ALG_ECDSA(PSA_ALG_SHA_384);
          break;
     case T_COSE_ELLIPTIC_CURVE_P_521:
          type_public  = PSA_KEY_TYPE_ECC_PUBLIC_KEY(PSA_ECC_FAMILY_SECP_R1);
+         alg = PSA_ALG_ECDSA(PSA_ALG_SHA_512);
          break;
 
     default:
@@ -1685,8 +1689,8 @@ t_cose_crypto_import_ec2_pubkey(int32_t               cose_ec_curve_id,
 
     // TODO: are these attributes right?
     attributes = psa_key_attributes_init();
-    psa_set_key_usage_flags(&attributes, PSA_KEY_USAGE_DERIVE | PSA_KEY_USAGE_COPY);
-    psa_set_key_algorithm(&attributes, PSA_ALG_ECDH);
+    psa_set_key_usage_flags(&attributes, PSA_KEY_USAGE_VERIFY_HASH);
+    psa_set_key_algorithm(&attributes, alg);
     psa_set_key_type(&attributes, type_public);
 
     /* This converts to a serialized representation of an EC Point
