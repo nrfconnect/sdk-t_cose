@@ -37,17 +37,10 @@ t_cose_sign1_sign_init(struct t_cose_sign1_sign_ctx *me,
     // TODO: Translate any more options flags?
     t_cose_sign_sign_init(&(me->me2), option_flags | T_COSE_OPT_MESSAGE_TYPE_SIGN1);
 
-    if(cose_algorithm_id == T_COSE_ALGORITHM_EDDSA) {
-        t_cose_signature_sign_eddsa_init(&(me->signer.eddsa));
-        t_cose_sign_add_signer(&(me->me2),
-                       t_cose_signature_sign_from_eddsa(&(me->signer.eddsa)));
-    } else
-    {
         t_cose_signature_sign_main_init(&(me->signer.general),
                                         me->cose_algorithm_id);
         t_cose_sign_add_signer(&(me->me2),
                       t_cose_signature_sign_from_main(&(me->signer.general)));
-    }
 }
 
 
@@ -58,15 +51,9 @@ t_cose_sign1_set_signing_key(struct t_cose_sign1_sign_ctx *me,
 {
     me->signing_key = signing_key; /* Used by make test message */
     me->kid = kid; /* Used by make test message */
-    if(me->cose_algorithm_id == T_COSE_ALGORITHM_EDDSA) {
-        t_cose_signature_sign_eddsa_set_signing_key(&(me->signer.eddsa),
-                                                     signing_key,
-                                                     kid);
-    } else {
         t_cose_signature_sign_main_set_signing_key(&(me->signer.general),
                                                     signing_key,
                                                     kid);
-    }
 }
 
 

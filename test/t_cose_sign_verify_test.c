@@ -860,8 +860,10 @@ static int32_t known_good_test(int cose_algorithm_id, struct q_useful_buf_c sign
             goto Done;
         }
     } else if (auxiliary_buffer_size != 0) {
-        return_value = -2;
-        goto Done;
+        /* Do Nothing
+         * The auxiliary_buffer is not initialized as EdDSA support has been
+         * removed from the build - along with the context initialization.
+         */
     }
 
     t_cose_sign1_verify_init(&verify_ctx, 0);
