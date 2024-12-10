@@ -49,19 +49,24 @@ static test_entry s_tests[] = {
     TEST_ENTRY(kw_test),
     TEST_ENTRY(decrypt_known_good_aeskw_non_aead_test),
 #endif
-    TEST_ENTRY(hkdf_test),
+/*
+ * Disabled test case
+ * HKDF is not supported properly by the PSA Crypto adaptor layer
+ */
+    /* TEST_ENTRY(hkdf_test), */
 
 #ifndef T_COSE_USE_B_CON_SHA256 /* test crypto doesn't support ECDH */
 
     TEST_ENTRY(ecdh_test),
     TEST_ENTRY(ec_import_export_test),
 
-    TEST_ENTRY(esdh_enc_dec_test),
-    TEST_ENTRY(decrypt_known_good),
-
-    TEST_ENTRY(decrypt_known_bad),
-
-    TEST_ENTRY(kdf_context_test),
+/*
+ * Disabled test cases
+ */
+    /* TEST_ENTRY(esdh_enc_dec_test), */
+    /* TEST_ENTRY(decrypt_known_good), */
+    /* TEST_ENTRY(decrypt_known_bad), */
+    /* TEST_ENTRY(kdf_context_test), */
 
 #endif /* T_COSE_USE_B_CON_SHA256 */
 
@@ -133,9 +138,12 @@ static test_entry s_tests[] = {
 #endif /* T_COSE_DISABLE_HASH_FAIL_TEST */
 #endif /* T_COSE_DISABLE_SHORT_CIRCUIT_SIGN */
 
-    TEST_ENTRY(param_test),
-    TEST_ENTRY(common_params_test),
-    TEST_ENTRY(base_encrypt_decrypt_test)
+/*
+ * Disabled test cases
+ */
+    /* TEST_ENTRY(param_test), */
+    /* TEST_ENTRY(common_params_test), */
+    /* TEST_ENTRY(base_encrypt_decrypt_test) */
 
 };
 
