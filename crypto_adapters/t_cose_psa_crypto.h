@@ -14,9 +14,9 @@
 
 #include <psa/crypto.h>
 
-#define PSA_CRYPTO_HAS_RESTARTABLE_SIGNING \
-    ((MBEDTLS_VERSION_MAJOR == 3 && MBEDTLS_VERSION_MINOR >= 4) || \
-     MBEDTLS_VERSION_MAJOR > 3)
+/* #define PSA_CRYPTO_HAS_RESTARTABLE_SIGNING \
+ *     ((MBEDTLS_VERSION_MAJOR == 3 && MBEDTLS_VERSION_MINOR >= 4) || \
+ *       MBEDTLS_VERSION_MAJOR > 3) */
 
 #if PSA_CRYPTO_HAS_RESTARTABLE_SIGNING
 struct t_cose_psa_crypto_context {

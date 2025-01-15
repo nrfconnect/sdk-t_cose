@@ -43,9 +43,6 @@
 #include <mbedtls/nist_kw.h>
 #endif /* T_COSE_DISABLE_KEYWRAP */
 
-#include <mbedtls/hkdf.h>
-#include <mbedtls/md.h>
-
 #include "t_cose_util.h"
 #include "t_cose_psa_crypto.h"
 
@@ -1593,56 +1590,6 @@ t_cose_crypto_ecdh(struct t_cose_key      private_key,
     }
 
     shared_key->ptr = shared_key_buf.ptr;
-
-    return T_COSE_SUCCESS;
-}
-
-
-
-
-
-/*
- * See documentation in t_cose_crypto.h
- */
-enum t_cose_err_t
-t_cose_crypto_hkdf(const int32_t               cose_hash_algorithm_id,
-                   const struct q_useful_buf_c salt,
-                   const struct q_useful_buf_c ikm,
-                   const struct q_useful_buf_c info,
-                   const struct q_useful_buf   okm_buffer)
-{
-    int                       psa_result;
-    const mbedtls_md_info_t  *md_info;
-    mbedtls_md_type_t         hash_type;
-
-    switch(cose_hash_algorithm_id) {
-        case T_COSE_ALGORITHM_SHA_256:
-            hash_type = MBEDTLS_MD_SHA256;
-            break;
-        case T_COSE_ALGORITHM_SHA_384:
-            hash_type = MBEDTLS_MD_SHA384;
-            break;
-        case T_COSE_ALGORITHM_SHA_512:
-            hash_type = MBEDTLS_MD_SHA512;
-            break;
-        default:
-            hash_type = MBEDTLS_MD_NONE;
-            break;
-    }
-
-    md_info = mbedtls_md_info_from_type(hash_type);
-    if(md_info == NULL) {
-        return T_COSE_ERR_UNSUPPORTED_HASH;
-    }
-
-    psa_result = mbedtls_hkdf(md_info,
-                              salt.ptr, salt.len,
-                              ikm.ptr, ikm.len,
-                              info.ptr, info.len,
-                              okm_buffer.ptr, okm_buffer.len);
-    if(psa_result != PSA_SUCCESS) {
-        return T_COSE_ERR_HKDF_FAIL;
-    }
 
     return T_COSE_SUCCESS;
 }
