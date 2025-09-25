@@ -29,7 +29,7 @@ init_signing_key_from_xx(int32_t               cose_algorithm_id,
 {
     psa_key_type_t       key_type;
     psa_status_t         crypto_result;
-    psa_key_handle_t     key_handle;
+    psa_key_id_t         key_handle;
     psa_algorithm_t      key_alg;
     psa_key_attributes_t key_attributes;
 
@@ -182,7 +182,7 @@ init_fixed_test_signing_key(int32_t            cose_algorithm_id,
  */
 void free_fixed_signing_key(struct t_cose_key key_pair)
 {
-    psa_destroy_key((psa_key_handle_t)key_pair.key.handle);
+    psa_destroy_key((psa_key_id_t)key_pair.key.handle);
 }
 
 
@@ -238,7 +238,7 @@ init_fixed_test_ec_encryption_key(int32_t            cose_ec_curve_id,
 
     status = psa_import_key(&attributes,
                             priv_key_bytes.ptr, priv_key_bytes.len,
-                            (mbedtls_svc_key_id_t *)(&private_key->key.handle));
+                            (psa_key_id_t *)(&private_key->key.handle));
     psa_reset_key_attributes(&attributes);
 
     if(status == PSA_ERROR_NOT_SUPPORTED) {
@@ -259,7 +259,7 @@ init_fixed_test_ec_encryption_key(int32_t            cose_ec_curve_id,
     psa_set_key_bits(&attributes, key_bitlen);
     status = psa_import_key(&attributes,
                              pub_key_bytes.ptr, pub_key_bytes.len,
-                             (mbedtls_svc_key_id_t *)(&public_key->key.handle));
+                             (psa_key_id_t *)(&public_key->key.handle));
     psa_reset_key_attributes(&attributes);
 
     /*
@@ -273,16 +273,16 @@ init_fixed_test_ec_encryption_key(int32_t            cose_ec_curve_id,
     psa_set_key_bits(&attributes, key_bitlen);
     status = psa_import_key(&attributes,
                             key_bytes.ptr, key_bytes.len,
-                            (mbedtls_svc_key_id_t *)(&public_key->key.handle));
+                            (psa_key_id_t *)(&public_key->key.handle));
     */
 
 
     if(status == PSA_ERROR_NOT_SUPPORTED) {
-        (void)psa_destroy_key((mbedtls_svc_key_id_t)private_key->key.handle);
+        (void)psa_destroy_key((psa_key_id_t)private_key->key.handle);
         return T_COSE_ERR_UNSUPPORTED_ELLIPTIC_CURVE_ALG;
     }
     else if (status != PSA_SUCCESS) {
-        (void)psa_destroy_key((mbedtls_svc_key_id_t)private_key->key.handle);
+        (void)psa_destroy_key((psa_key_id_t)private_key->key.handle);
         return T_COSE_ERR_PUBLIC_KEY_IMPORT_FAILED;
     }
 
@@ -296,7 +296,7 @@ init_fixed_test_ec_encryption_key(int32_t            cose_ec_curve_id,
 void
 free_fixed_test_ec_encryption_key(struct t_cose_key key)
 {
-    psa_destroy_key((psa_key_handle_t)key.key.handle);
+    psa_destroy_key((psa_key_id_t)key.key.handle);
 }
 
 
@@ -309,4 +309,3 @@ int check_for_key_allocation_leaks(void)
 {
     return 0;
 }
-
