@@ -1759,7 +1759,10 @@ t_cose_crypto_ecdh(struct t_cose_key      private_key,
                                        shared_key_buf.ptr,
                                        shared_key_buf.len,
                                        &(shared_key->len));
-    if(psa_status != PSA_SUCCESS) {
+    if(psa_status == PSA_ERROR_NOT_SUPPORTED) {
+        return T_COSE_ERR_KEY_AGREEMENT_FAIL;
+    }
+    else if(psa_status != PSA_SUCCESS) {
         return T_COSE_ERR_FAIL; // TODO: error code
     }
 
