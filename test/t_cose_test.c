@@ -25,6 +25,40 @@
 #define SZ_CONTENT "This is the content."
 static const struct q_useful_buf_c s_input_payload = {SZ_CONTENT, sizeof(SZ_CONTENT)-1};
 
+/* This function is only needed to avoid L6218E (undefined symbol) error when building with Armclang */
+__attribute__((weak))
+enum t_cose_err_t
+t_cose_test_message_sign1_sign(struct t_cose_sign1_sign_ctx  *me,
+                               uint32_t                      test_message_options,
+                               struct q_useful_buf_c         payload,
+                               struct q_useful_buf           out_buf,
+                               struct q_useful_buf_c         *result)
+{
+    (void)me;
+    (void)test_message_options;
+    (void)payload;
+    (void)out_buf;
+    (void)result;
+    return T_COSE_ERR_FAIL;
+}
+
+/* This function is only needed to avoid L6218E (undefined symbol) error when building with Armclang */
+__attribute__((weak))
+enum t_cose_err_t
+t_cose_crypto_hkdf(const int32_t               cose_hash_algorithm_id,
+                   const struct q_useful_buf_c salt,
+                   const struct q_useful_buf_c ikm,
+                   const struct q_useful_buf_c info,
+                   const struct q_useful_buf   okm_buffer)
+{
+    (void)cose_hash_algorithm_id;
+    (void)salt;
+    (void)ikm;
+    (void)info;
+    (void)okm_buffer;
+    return T_COSE_ERR_FAIL;
+}
+
 /*
  * Public function, see t_cose_test.h
  */
