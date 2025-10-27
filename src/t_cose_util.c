@@ -200,7 +200,7 @@ t_cose_tags_and_type(const uint64_t     *relevant_cose_tag_nums,
         if(tag_on_item == CBOR_TAG_INVALID64) {
             break;
         }
-        if(returned_tag_index > T_COSE_MAX_TAGS_TO_RETURN) {
+        if(returned_tag_index >= T_COSE_MAX_TAGS_TO_RETURN) {
             return T_COSE_ERR_TOO_MANY_TAGS;
         }
         unprocessed_tag_nums[returned_tag_index] = tag_on_item;

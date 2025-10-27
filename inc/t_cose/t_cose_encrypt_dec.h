@@ -407,7 +407,7 @@ static inline uint64_t
 t_cose_encrypt_dec_nth_tag(const struct t_cose_encrypt_dec_ctx *me,
                            size_t                               n)
 {
-    if(n > T_COSE_MAX_TAGS_TO_RETURN) {
+    if(n >= T_COSE_MAX_TAGS_TO_RETURN) {
         return CBOR_TAG_INVALID64;
     }
     return me->unprocessed_tag_nums[n];
